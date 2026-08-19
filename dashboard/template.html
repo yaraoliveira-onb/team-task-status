@@ -1,0 +1,437 @@
+<meta charset="utf-8">
+<title>Painel do Time</title>
+<style>
+  @font-face {
+    font-family: 'Archivo';
+    src: url(data:font/ttf;base64,__ARCHIVO_B64__) format('truetype');
+    font-weight: 500 800;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Plex Mono';
+    src: url(data:font/ttf;base64,__PLEXMONO_REGULAR_B64__) format('truetype');
+    font-weight: 400;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'Plex Mono';
+    src: url(data:font/ttf;base64,__PLEXMONO_MEDIUM_B64__) format('truetype');
+    font-weight: 500;
+    font-display: swap;
+  }
+
+  :root {
+    --bg: #f6f4ee;
+    --surface: #ffffff;
+    --surface-sunken: #efede4;
+    --ink: #23241f;
+    --ink-muted: #66695f;
+    --border: #e1dfd4;
+    --accent: #a76a22;
+    --accent-soft: #f1e3cd;
+    --success: #2f7249;
+    --success-soft: #e2ede2;
+    --progress: #2f5d8f;
+    --progress-soft: #e2eaf3;
+    --danger: #a03f32;
+    --danger-soft: #f4e2de;
+    --shadow: 0 1px 2px rgba(35, 36, 31, 0.06), 0 4px 16px rgba(35, 36, 31, 0.05);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #16170f;
+      --surface: #1f2018;
+      --surface-sunken: #14150e;
+      --ink: #ece8dc;
+      --ink-muted: #a3a595;
+      --border: #34362a;
+      --accent: #dba75a;
+      --accent-soft: #3a2f19;
+      --success: #64ad82;
+      --success-soft: #1f3226;
+      --progress: #7fabdc;
+      --progress-soft: #1e2c3c;
+      --danger: #e08b7c;
+      --danger-soft: #3a2420;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.25), 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #16170f;
+    --surface: #1f2018;
+    --surface-sunken: #14150e;
+    --ink: #ece8dc;
+    --ink-muted: #a3a595;
+    --border: #34362a;
+    --accent: #dba75a;
+    --accent-soft: #3a2f19;
+    --success: #64ad82;
+    --success-soft: #1f3226;
+    --progress: #7fabdc;
+    --progress-soft: #1e2c3c;
+    --danger: #e08b7c;
+    --danger-soft: #3a2420;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.25), 0 8px 24px rgba(0, 0, 0, 0.3);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+  .page {
+    max-width: 1180px;
+    margin: 0 auto;
+    padding: 28px 24px 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  h1, h2, h3 { font-family: 'Archivo', -apple-system, sans-serif; text-wrap: balance; margin: 0; }
+  .mono { font-family: 'Plex Mono', ui-monospace, monospace; font-variant-numeric: tabular-nums; }
+
+  /* header */
+  .eyebrow {
+    font-family: 'Archivo', sans-serif;
+    font-weight: 700;
+    font-size: 12px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  header.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 16px;
+    flex-wrap: wrap;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 20px;
+  }
+  header.top h1 { font-weight: 800; font-size: 28px; margin-top: 6px; letter-spacing: -0.01em; }
+  .meta { text-align: right; color: var(--ink-muted); font-size: 13px; }
+  .meta .ts { color: var(--ink); font-weight: 500; }
+
+  /* roster */
+  section { display: flex; flex-direction: column; gap: 12px; }
+  .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+  .section-head h2 { font-size: 17px; font-weight: 700; }
+  .section-head .count { color: var(--ink-muted); font-size: 13px; }
+
+  .roster-row {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+  .roster-card {
+    flex: 0 0 auto;
+    min-width: 230px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border-left: 3px solid var(--progress);
+  }
+  .roster-card .name { font-weight: 600; font-size: 14px; }
+  .roster-card .task { color: var(--ink-muted); font-size: 13px; }
+  .roster-card .foot { display: flex; justify-content: space-between; align-items: center; margin-top: 4px; }
+  .tag {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-muted);
+    background: var(--surface-sunken);
+    border-radius: 5px;
+    padding: 2px 7px;
+  }
+  .elapsed { font-size: 12px; color: var(--progress); }
+
+  .empty {
+    color: var(--ink-muted);
+    font-size: 14px;
+    border: 1px dashed var(--border);
+    border-radius: 10px;
+    padding: 18px;
+    text-align: center;
+  }
+
+  /* panel grid */
+  .grid3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  @media (max-width: 860px) {
+    .grid3 { grid-template-columns: 1fr; }
+  }
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    min-height: 180px;
+  }
+  .panel h3 { font-size: 14px; font-weight: 700; }
+
+  .bar-row { display: flex; align-items: center; gap: 10px; }
+  .bar-row .label { flex: 0 0 108px; font-size: 13px; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .bar-row .track { flex: 1; background: var(--surface-sunken); border-radius: 4px; height: 8px; overflow: hidden; }
+  .bar-row .fill { height: 100%; border-radius: 4px; background: var(--accent); }
+  .bar-row .val { flex: 0 0 28px; text-align: right; font-size: 13px; font-weight: 600; }
+
+  .err-item { border-left: 3px solid var(--danger); background: var(--danger-soft); border-radius: 0 8px 8px 0; padding: 8px 10px; display: flex; flex-direction: column; gap: 2px; }
+  .err-item .who { font-size: 12px; font-weight: 600; color: var(--ink); }
+  .err-item .msg { font-size: 12.5px; color: var(--ink); }
+  .err-item .when { font-size: 11px; color: var(--ink-muted); }
+
+  /* table */
+  .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; background: var(--surface); box-shadow: var(--shadow); }
+  table { border-collapse: collapse; width: 100%; min-width: 640px; }
+  th, td { text-align: left; padding: 10px 14px; font-size: 13px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  th { color: var(--ink-muted); font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; background: var(--surface-sunken); }
+  tr:last-child td { border-bottom: none; }
+  td.task-cell { white-space: normal; min-width: 220px; }
+
+  .pill { display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+  .pill.iniciada { background: var(--progress-soft); color: var(--progress); }
+  .pill.concluida { background: var(--success-soft); color: var(--success); }
+  .pill.erro { background: var(--danger-soft); color: var(--danger); }
+  .pill .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+
+  footer {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    color: var(--ink-muted);
+    font-size: 12.5px;
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+  }
+  footer a { color: var(--ink-muted); }
+</style>
+
+<div class="page">
+  <header class="top">
+    <div>
+      <div class="eyebrow">Aegro · Status de tarefas do time</div>
+      <h1>Painel do time</h1>
+    </div>
+    <div class="meta">
+      <div>Atualizado <span class="ts mono" id="updated-at">—</span></div>
+      <div>Atualiza a cada hora</div>
+    </div>
+  </header>
+
+  <section id="section-roster">
+    <div class="section-head"><h2>Agora</h2><span class="count" id="roster-count"></span></div>
+    <div id="roster-row" class="roster-row"></div>
+  </section>
+
+  <section>
+    <div class="grid3">
+      <div class="panel">
+        <h3>Concluídas por pessoa</h3>
+        <div id="panel-completed"></div>
+      </div>
+      <div class="panel">
+        <h3>Volume por projeto</h3>
+        <div id="panel-projects"></div>
+      </div>
+      <div class="panel">
+        <h3>Erros de CLI</h3>
+        <div id="panel-errors"></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head"><h2>Todas as tarefas</h2><span class="count" id="table-count"></span></div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Status</th><th>Pessoa</th><th>Projeto</th><th>Tarefa</th><th>Início</th><th>Fim</th></tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <span>Fonte: <a href="https://github.com/yaraoliveira-onb/team-task-status" target="_blank" rel="noopener">yaraoliveira-onb/team-task-status</a></span>
+    <span id="event-count-footer"></span>
+  </footer>
+</div>
+
+<script id="events-data" type="application/json">__EVENTS_JSON__</script>
+<script id="generated-at" type="application/json">__GENERATED_AT__</script>
+<script>
+(function () {
+  const events = JSON.parse(document.getElementById('events-data').textContent || '[]');
+  const generatedAt = JSON.parse(document.getElementById('generated-at').textContent || 'null');
+
+  function fmtDateTime(iso) {
+    if (!iso) return '—';
+    const d = new Date(iso);
+    if (isNaN(d)) return '—';
+    return d.toLocaleString('pt-BR', { day: '2-digit', month: '2-digit', timeZone: 'America/Sao_Paulo', hour: '2-digit', minute: '2-digit' });
+  }
+  function fmtElapsed(iso) {
+    const ms = Date.now() - new Date(iso).getTime();
+    if (!(ms >= 0)) return '';
+    const mins = Math.floor(ms / 60000);
+    if (mins < 1) return 'agora';
+    if (mins < 60) return mins + 'min';
+    const hrs = Math.floor(mins / 60);
+    if (hrs < 24) return hrs + 'h';
+    return Math.floor(hrs / 24) + 'd';
+  }
+
+  // group events by tarefa_id, keep chronological order
+  const byTask = new Map();
+  for (const ev of events) {
+    if (!ev || !ev.tarefa_id) continue;
+    if (!byTask.has(ev.tarefa_id)) byTask.set(ev.tarefa_id, []);
+    byTask.get(ev.tarefa_id).push(ev);
+  }
+  const tasks = [];
+  for (const [id, evs] of byTask) {
+    evs.sort((a, b) => new Date(a.ts) - new Date(b.ts));
+    const first = evs[0];
+    const last = evs[evs.length - 1];
+    const started = evs.find(e => e.status === 'iniciada');
+    const finished = evs.find(e => e.status === 'concluida' || e.status === 'erro');
+    tasks.push({
+      tarefa_id: id,
+      pessoa: last.pessoa,
+      projeto: last.projeto,
+      tarefa: last.tarefa,
+      status: last.status,
+      erro_msg: last.erro_msg,
+      ts_inicio: started ? started.ts : first.ts,
+      ts_fim: finished ? finished.ts : null,
+    });
+  }
+  tasks.sort((a, b) => new Date(b.ts_inicio) - new Date(a.ts_inicio));
+
+  const emptyMsg = (label) => {
+    const d = document.createElement('div');
+    d.className = 'empty';
+    d.textContent = label;
+    return d;
+  };
+
+  // roster: tasks currently "iniciada"
+  const rosterRow = document.getElementById('roster-row');
+  const inProgress = tasks.filter(t => t.status === 'iniciada');
+  document.getElementById('roster-count').textContent = inProgress.length ? inProgress.length + ' em andamento' : '';
+  if (!inProgress.length) {
+    rosterRow.appendChild(emptyMsg(events.length ? 'Ninguém com tarefa em aberto no momento.' : 'Aguardando os primeiros registros do time — ative a skill onboarding-task-status para começar.'));
+  } else {
+    for (const t of inProgress) {
+      const card = document.createElement('div');
+      card.className = 'roster-card';
+      card.innerHTML = `
+        <div class="name">${escapeHtml(t.pessoa)}</div>
+        <div class="task">${escapeHtml(t.tarefa)}</div>
+        <div class="foot">
+          <span class="tag">${escapeHtml(t.projeto)}</span>
+          <span class="elapsed mono">${fmtElapsed(t.ts_inicio)}</span>
+        </div>`;
+      rosterRow.appendChild(card);
+    }
+  }
+
+  // completed per person
+  const completedByPerson = new Map();
+  for (const t of tasks) {
+    if (t.status === 'concluida') completedByPerson.set(t.pessoa, (completedByPerson.get(t.pessoa) || 0) + 1);
+  }
+  const panelCompleted = document.getElementById('panel-completed');
+  renderBarList(panelCompleted, completedByPerson, 'Nenhuma tarefa concluída ainda.');
+
+  // volume per project
+  const byProject = new Map();
+  for (const t of tasks) byProject.set(t.projeto, (byProject.get(t.projeto) || 0) + 1);
+  const panelProjects = document.getElementById('panel-projects');
+  renderBarList(panelProjects, byProject, 'Nenhum projeto registrado ainda.');
+
+  function renderBarList(container, map, emptyLabel) {
+    const entries = [...map.entries()].sort((a, b) => b[1] - a[1]);
+    if (!entries.length) { container.appendChild(emptyMsg(emptyLabel)); return; }
+    const max = entries[0][1];
+    for (const [label, val] of entries) {
+      const row = document.createElement('div');
+      row.className = 'bar-row';
+      row.innerHTML = `
+        <span class="label">${escapeHtml(label)}</span>
+        <span class="track"><span class="fill" style="width:${Math.max(6, (val / max) * 100)}%"></span></span>
+        <span class="val mono">${val}</span>`;
+      container.appendChild(row);
+    }
+  }
+
+  // errors
+  const panelErrors = document.getElementById('panel-errors');
+  const errors = tasks.filter(t => t.status === 'erro').sort((a, b) => new Date(b.ts_fim || b.ts_inicio) - new Date(a.ts_fim || a.ts_inicio));
+  if (!errors.length) {
+    panelErrors.appendChild(emptyMsg('Nenhum erro de CLI registrado.'));
+  } else {
+    for (const t of errors.slice(0, 8)) {
+      const item = document.createElement('div');
+      item.className = 'err-item';
+      item.innerHTML = `
+        <span class="who">${escapeHtml(t.pessoa)} · ${escapeHtml(t.projeto)}</span>
+        <span class="msg">${escapeHtml(t.erro_msg || t.tarefa)}</span>
+        <span class="when mono">${fmtDateTime(t.ts_fim || t.ts_inicio)}</span>`;
+      panelErrors.appendChild(item);
+    }
+  }
+
+  // full table
+  const tbody = document.getElementById('table-body');
+  document.getElementById('table-count').textContent = tasks.length ? tasks.length + ' tarefas' : '';
+  if (!tasks.length) {
+    const tr = document.createElement('tr');
+    const td = document.createElement('td');
+    td.colSpan = 6;
+    td.appendChild(emptyMsg('Sem registros ainda.'));
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+  } else {
+    for (const t of tasks) {
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td><span class="pill ${t.status}"><span class="dot"></span>${statusLabel(t.status)}</span></td>
+        <td>${escapeHtml(t.pessoa)}</td>
+        <td>${escapeHtml(t.projeto)}</td>
+        <td class="task-cell">${escapeHtml(t.tarefa)}</td>
+        <td class="mono">${fmtDateTime(t.ts_inicio)}</td>
+        <td class="mono">${fmtDateTime(t.ts_fim)}</td>`;
+      tbody.appendChild(tr);
+    }
+  }
+
+  document.getElementById('event-count-footer').textContent = events.length + ' eventos registrados';
+  document.getElementById('updated-at').textContent = generatedAt ? fmtDateTime(generatedAt) + ' (BRT)' : '—';
+
+  function statusLabel(s) { return s === 'iniciada' ? 'Em andamento' : s === 'concluida' ? 'Concluída' : 'Erro'; }
+  function escapeHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+})();
+</script>
