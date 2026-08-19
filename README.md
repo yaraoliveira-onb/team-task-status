@@ -13,9 +13,11 @@ ler esses dados.
 ## Como instalar a skill (por pessoa)
 
 1. Copie o conteúdo de [`skill/onboarding-task-status.md`](skill/onboarding-task-status.md)
-   para a pasta de skills pessoais do seu Claude Code
-   (`~/.claude/skills/onboarding-task-status.md`, ou o equivalente Windows
-   `%USERPROFILE%\.claude\skills\onboarding-task-status.md`).
+   para a pasta de skills pessoais do seu Claude Code, **numa subpasta
+   própria, como `SKILL.md`** (mesmo formato das outras skills públicas do
+   Aegro — não é um `.md` solto):
+   `~/.claude/skills/onboarding-task-status/SKILL.md`, ou no Windows
+   `%USERPROFILE%\.claude\skills\onboarding-task-status\SKILL.md`.
 2. Ative digitando `/onboarding-task-status` no início de cada sessão de
    trabalho. Na primeira vez, ela pergunta qual das 8 pessoas do time você é
    e guarda a resposta localmente — não precisa de conta GitHub nem login.
