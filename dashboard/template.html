@@ -118,43 +118,10 @@
   .meta { text-align: right; color: var(--ink-muted); font-size: 13px; }
   .meta .ts { color: var(--ink); font-weight: 500; }
 
-  /* roster */
   section { display: flex; flex-direction: column; gap: 12px; }
   .section-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
   .section-head h2 { font-size: 17px; font-weight: 700; }
   .section-head .count { color: var(--ink-muted); font-size: 13px; }
-
-  .roster-row {
-    display: flex;
-    gap: 12px;
-    overflow-x: auto;
-    padding-bottom: 4px;
-  }
-  .roster-card {
-    flex: 0 0 auto;
-    min-width: 230px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 14px 16px;
-    box-shadow: var(--shadow);
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    border-left: 3px solid var(--progress);
-  }
-  .roster-card .name { font-weight: 600; font-size: 14px; }
-  .roster-card .task { color: var(--ink-muted); font-size: 13px; }
-  .roster-card .foot { display: flex; justify-content: space-between; align-items: center; margin-top: 4px; }
-  .tag {
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--ink-muted);
-    background: var(--surface-sunken);
-    border-radius: 5px;
-    padding: 2px 7px;
-  }
-  .elapsed { font-size: 12px; color: var(--progress); }
 
   .empty {
     color: var(--ink-muted);
@@ -165,14 +132,84 @@
     text-align: center;
   }
 
-  /* panel grid */
-  .grid3 {
+  /* KPI row */
+  .kpi-row {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+  }
+  @media (max-width: 760px) {
+    .kpi-row { grid-template-columns: repeat(2, 1fr); }
+  }
+  .kpi-tile {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 16px 18px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .kpi-tile .num { font-family: 'Archivo', sans-serif; font-weight: 800; font-size: 32px; line-height: 1; font-variant-numeric: tabular-nums; }
+  .kpi-tile .label { font-size: 12.5px; color: var(--ink-muted); font-weight: 600; }
+  .kpi-tile.progress { border-left: 3px solid var(--progress); }
+  .kpi-tile.progress .num { color: var(--progress); }
+  .kpi-tile.success { border-left: 3px solid var(--success); }
+  .kpi-tile.success .num { color: var(--success); }
+  .kpi-tile.danger { border-left: 3px solid var(--danger); }
+  .kpi-tile.danger .num { color: var(--danger); }
+
+  /* collaborator board */
+  .collab-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+  }
+  @media (max-width: 760px) {
+    .collab-grid { grid-template-columns: 1fr; }
+  }
+  .collab-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .collab-card .head { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .collab-card .name { font-weight: 700; font-size: 15px; }
+  .collab-card .counts { display: flex; gap: 6px; }
+  .collab-card .counts .c { font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 999px; font-variant-numeric: tabular-nums; }
+  .collab-card .counts .c.progress { background: var(--progress-soft); color: var(--progress); }
+  .collab-card .counts .c.success { background: var(--success-soft); color: var(--success); }
+  .collab-card .counts .c.danger { background: var(--danger-soft); color: var(--danger); }
+  .collab-card .tasks { display: flex; flex-direction: column; gap: 6px; max-height: 220px; overflow-y: auto; }
+  .collab-card .empty { padding: 10px; font-size: 13px; }
+  .task-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    border-left: 3px solid var(--border);
+    padding: 4px 0 4px 8px;
+  }
+  .task-row.iniciada { border-left-color: var(--progress); }
+  .task-row.concluida { border-left-color: var(--success); }
+  .task-row.erro { border-left-color: var(--danger); }
+  .task-row .desc { flex: 1; font-size: 13px; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .task-row .assinatura { font-size: 11px; color: var(--ink-muted); background: var(--surface-sunken); border-radius: 5px; padding: 1px 6px; flex: 0 0 auto; }
+  .task-row .when { font-size: 11px; color: var(--ink-muted); flex: 0 0 auto; }
+
+  /* panel grid */
+  .grid2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
     gap: 16px;
   }
-  @media (max-width: 860px) {
-    .grid3 { grid-template-columns: 1fr; }
+  @media (max-width: 760px) {
+    .grid2 { grid-template-columns: 1fr; }
   }
   .panel {
     background: var(--surface);
@@ -183,12 +220,12 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
-    min-height: 180px;
+    min-height: 160px;
   }
   .panel h3 { font-size: 14px; font-weight: 700; }
 
   .bar-row { display: flex; align-items: center; gap: 10px; }
-  .bar-row .label { flex: 0 0 108px; font-size: 13px; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .bar-row .label { flex: 0 0 130px; font-size: 13px; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .bar-row .track { flex: 1; background: var(--surface-sunken); border-radius: 4px; height: 8px; overflow: hidden; }
   .bar-row .fill { height: 100%; border-radius: 4px; background: var(--accent); }
   .bar-row .val { flex: 0 0 28px; text-align: right; font-size: 13px; font-weight: 600; }
@@ -206,11 +243,11 @@
   tr:last-child td { border-bottom: none; }
   td.task-cell { white-space: normal; min-width: 220px; }
 
-  .pill { display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+  .pill { display: inline-flex; align-items: center; gap: 5px; padding: 3px 9px; border-radius: 999px; font-size: 12px; font-weight: 600; white-space: nowrap; }
   .pill.iniciada { background: var(--progress-soft); color: var(--progress); }
   .pill.concluida { background: var(--success-soft); color: var(--success); }
   .pill.erro { background: var(--danger-soft); color: var(--danger); }
-  .pill .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+  .pill .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; flex: 0 0 auto; }
 
   footer {
     display: flex;
@@ -222,7 +259,6 @@
     border-top: 1px solid var(--border);
     padding-top: 16px;
   }
-  footer a { color: var(--ink-muted); }
 </style>
 
 <div class="page">
@@ -237,23 +273,40 @@
     </div>
   </header>
 
-  <section id="section-roster">
-    <div class="section-head"><h2>Agora</h2><span class="count" id="roster-count"></span></div>
-    <div id="roster-row" class="roster-row"></div>
+  <section id="section-kpi">
+    <div class="kpi-row">
+      <div class="kpi-tile progress">
+        <span class="num mono" id="kpi-andamento">0</span>
+        <span class="label">Em andamento</span>
+      </div>
+      <div class="kpi-tile success">
+        <span class="num mono" id="kpi-concluidas">0</span>
+        <span class="label">Concluídas</span>
+      </div>
+      <div class="kpi-tile danger">
+        <span class="num mono" id="kpi-erros">0</span>
+        <span class="label">Não executadas / erro CLI</span>
+      </div>
+      <div class="kpi-tile">
+        <span class="num mono" id="kpi-total">0</span>
+        <span class="label">Total de tarefas</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="section-collab">
+    <div class="section-head"><h2>Por colaborador</h2><span class="count" id="collab-count"></span></div>
+    <div id="collab-grid" class="collab-grid"></div>
   </section>
 
   <section>
-    <div class="grid3">
+    <div class="grid2">
       <div class="panel">
-        <h3>Concluídas por pessoa</h3>
-        <div id="panel-completed"></div>
+        <h3>Volume por assinatura</h3>
+        <div id="panel-assinaturas"></div>
       </div>
       <div class="panel">
-        <h3>Volume por projeto</h3>
-        <div id="panel-projects"></div>
-      </div>
-      <div class="panel">
-        <h3>Erros de CLI</h3>
+        <h3>Não executadas / erro CLI — recentes</h3>
         <div id="panel-errors"></div>
       </div>
     </div>
@@ -264,7 +317,7 @@
     <div class="table-wrap">
       <table>
         <thead>
-          <tr><th>Status</th><th>Pessoa</th><th>Projeto</th><th>Tarefa</th><th>Início</th><th>Fim</th></tr>
+          <tr><th>Status</th><th>Pessoa</th><th>Assinatura</th><th>Tarefa</th><th>Início</th><th>Fim</th></tr>
         </thead>
         <tbody id="table-body"></tbody>
       </table>
@@ -272,7 +325,7 @@
   </section>
 
   <footer>
-    <span>Fonte: <a href="https://github.com/yaraoliveira-onb/team-task-status" target="_blank" rel="noopener">yaraoliveira-onb/team-task-status</a></span>
+    <span>Painel gerado automaticamente a partir dos registros do time</span>
     <span id="event-count-footer"></span>
   </footer>
 </div>
@@ -281,6 +334,10 @@
 <script id="generated-at" type="application/json">__GENERATED_AT__</script>
 <script>
 (function () {
+  const ROSTER = ["Yara", "Eduarda", "Thalia", "Alexandra", "Dutra", "Freitas", "Gustavo", "Tiele"];
+  const STATUS_MAP = { 'Iniciada': 'iniciada', 'Concluída': 'concluida', 'Não executada/Erro CLI': 'erro' };
+  const STATUS_LABEL = { iniciada: 'Em andamento', concluida: 'Concluída', erro: 'Não executada / Erro CLI' };
+
   const events = JSON.parse(document.getElementById('events-data').textContent || '[]');
   const generatedAt = JSON.parse(document.getElementById('generated-at').textContent || 'null');
 
@@ -300,13 +357,23 @@
     if (hrs < 24) return hrs + 'h';
     return Math.floor(hrs / 24) + 'd';
   }
+  function escapeHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+  const emptyMsg = (label) => {
+    const d = document.createElement('div');
+    d.className = 'empty';
+    d.textContent = label;
+    return d;
+  };
 
-  // group events by tarefa_id, keep chronological order
+  // group raw events by tarefa_id, keep chronological order, normalize status
   const byTask = new Map();
   for (const ev of events) {
     if (!ev || !ev.tarefa_id) continue;
+    const status = STATUS_MAP[ev.status] || ev.status;
     if (!byTask.has(ev.tarefa_id)) byTask.set(ev.tarefa_id, []);
-    byTask.get(ev.tarefa_id).push(ev);
+    byTask.get(ev.tarefa_id).push({ ...ev, status });
   }
   const tasks = [];
   for (const [id, evs] of byTask) {
@@ -318,57 +385,72 @@
     tasks.push({
       tarefa_id: id,
       pessoa: last.pessoa,
-      projeto: last.projeto,
+      assinatura: last.assinatura,
       tarefa: last.tarefa,
       status: last.status,
-      erro_msg: last.erro_msg,
       ts_inicio: started ? started.ts : first.ts,
       ts_fim: finished ? finished.ts : null,
     });
   }
   tasks.sort((a, b) => new Date(b.ts_inicio) - new Date(a.ts_inicio));
 
-  const emptyMsg = (label) => {
-    const d = document.createElement('div');
-    d.className = 'empty';
-    d.textContent = label;
-    return d;
-  };
+  // KPIs
+  const nAndamento = tasks.filter(t => t.status === 'iniciada').length;
+  const nConcluidas = tasks.filter(t => t.status === 'concluida').length;
+  const nErros = tasks.filter(t => t.status === 'erro').length;
+  document.getElementById('kpi-andamento').textContent = nAndamento;
+  document.getElementById('kpi-concluidas').textContent = nConcluidas;
+  document.getElementById('kpi-erros').textContent = nErros;
+  document.getElementById('kpi-total').textContent = tasks.length;
 
-  // roster: tasks currently "iniciada"
-  const rosterRow = document.getElementById('roster-row');
-  const inProgress = tasks.filter(t => t.status === 'iniciada');
-  document.getElementById('roster-count').textContent = inProgress.length ? inProgress.length + ' em andamento' : '';
-  if (!inProgress.length) {
-    rosterRow.appendChild(emptyMsg(events.length ? 'Ninguém com tarefa em aberto no momento.' : 'Aguardando os primeiros registros do time — ative a skill onboarding-task-status para começar.'));
-  } else {
-    for (const t of inProgress) {
-      const card = document.createElement('div');
-      card.className = 'roster-card';
-      card.innerHTML = `
-        <div class="name">${escapeHtml(t.pessoa)}</div>
-        <div class="task">${escapeHtml(t.tarefa)}</div>
-        <div class="foot">
-          <span class="tag">${escapeHtml(t.projeto)}</span>
-          <span class="elapsed mono">${fmtElapsed(t.ts_inicio)}</span>
-        </div>`;
-      rosterRow.appendChild(card);
-    }
-  }
-
-  // completed per person
-  const completedByPerson = new Map();
+  // per-collaborator board — fixed roster, always shown
+  const collabGrid = document.getElementById('collab-grid');
+  document.getElementById('collab-count').textContent = ROSTER.length + ' pessoas';
+  const byPerson = new Map(ROSTER.map(p => [p, []]));
   for (const t of tasks) {
-    if (t.status === 'concluida') completedByPerson.set(t.pessoa, (completedByPerson.get(t.pessoa) || 0) + 1);
+    if (!byPerson.has(t.pessoa)) byPerson.set(t.pessoa, []); // pessoa fora do roster esperado — mostra mesmo assim
+    byPerson.get(t.pessoa).push(t);
   }
-  const panelCompleted = document.getElementById('panel-completed');
-  renderBarList(panelCompleted, completedByPerson, 'Nenhuma tarefa concluída ainda.');
+  for (const [pessoa, ptasks] of byPerson) {
+    ptasks.sort((a, b) => new Date(b.ts_inicio) - new Date(a.ts_inicio));
+    const card = document.createElement('div');
+    card.className = 'collab-card';
+    const cAndamento = ptasks.filter(t => t.status === 'iniciada').length;
+    const cConcluida = ptasks.filter(t => t.status === 'concluida').length;
+    const cErro = ptasks.filter(t => t.status === 'erro').length;
+    const head = document.createElement('div');
+    head.className = 'head';
+    head.innerHTML = `
+      <span class="name">${escapeHtml(pessoa)}</span>
+      <span class="counts">
+        <span class="c progress">${cAndamento}</span>
+        <span class="c success">${cConcluida}</span>
+        <span class="c danger">${cErro}</span>
+      </span>`;
+    card.appendChild(head);
+    const list = document.createElement('div');
+    list.className = 'tasks';
+    if (!ptasks.length) {
+      list.appendChild(emptyMsg('Sem tarefas registradas.'));
+    } else {
+      for (const t of ptasks.slice(0, 12)) {
+        const row = document.createElement('div');
+        row.className = 'task-row ' + t.status;
+        row.innerHTML = `
+          <span class="assinatura mono">${escapeHtml(t.assinatura || '—')}</span>
+          <span class="desc">${escapeHtml(t.tarefa)}</span>
+          <span class="when mono">${fmtElapsed(t.ts_fim || t.ts_inicio)}</span>`;
+        list.appendChild(row);
+      }
+    }
+    card.appendChild(list);
+    collabGrid.appendChild(card);
+  }
 
-  // volume per project
-  const byProject = new Map();
-  for (const t of tasks) byProject.set(t.projeto, (byProject.get(t.projeto) || 0) + 1);
-  const panelProjects = document.getElementById('panel-projects');
-  renderBarList(panelProjects, byProject, 'Nenhum projeto registrado ainda.');
+  // volume per assinatura
+  const byAssinatura = new Map();
+  for (const t of tasks) byAssinatura.set(t.assinatura || '—', (byAssinatura.get(t.assinatura || '—') || 0) + 1);
+  renderBarList(document.getElementById('panel-assinaturas'), byAssinatura, 'Nenhuma assinatura registrada ainda.');
 
   function renderBarList(container, map, emptyLabel) {
     const entries = [...map.entries()].sort((a, b) => b[1] - a[1]);
@@ -378,25 +460,25 @@
       const row = document.createElement('div');
       row.className = 'bar-row';
       row.innerHTML = `
-        <span class="label">${escapeHtml(label)}</span>
+        <span class="label mono">${escapeHtml(label)}</span>
         <span class="track"><span class="fill" style="width:${Math.max(6, (val / max) * 100)}%"></span></span>
         <span class="val mono">${val}</span>`;
       container.appendChild(row);
     }
   }
 
-  // errors
+  // recent errors (no message field — just who/assinatura/task/when)
   const panelErrors = document.getElementById('panel-errors');
   const errors = tasks.filter(t => t.status === 'erro').sort((a, b) => new Date(b.ts_fim || b.ts_inicio) - new Date(a.ts_fim || a.ts_inicio));
   if (!errors.length) {
-    panelErrors.appendChild(emptyMsg('Nenhum erro de CLI registrado.'));
+    panelErrors.appendChild(emptyMsg('Nenhuma tarefa não executada / erro de CLI registrada.'));
   } else {
     for (const t of errors.slice(0, 8)) {
       const item = document.createElement('div');
       item.className = 'err-item';
       item.innerHTML = `
-        <span class="who">${escapeHtml(t.pessoa)} · ${escapeHtml(t.projeto)}</span>
-        <span class="msg">${escapeHtml(t.erro_msg || t.tarefa)}</span>
+        <span class="who">${escapeHtml(t.pessoa)} · <span class="mono">${escapeHtml(t.assinatura || '—')}</span></span>
+        <span class="msg">${escapeHtml(t.tarefa)}</span>
         <span class="when mono">${fmtDateTime(t.ts_fim || t.ts_inicio)}</span>`;
       panelErrors.appendChild(item);
     }
@@ -409,16 +491,16 @@
     const tr = document.createElement('tr');
     const td = document.createElement('td');
     td.colSpan = 6;
-    td.appendChild(emptyMsg('Sem registros ainda.'));
+    td.appendChild(emptyMsg(events.length ? 'Nenhuma tarefa reconhecida ainda.' : 'Aguardando os primeiros registros do time — ative a skill onboarding-task-status para começar.'));
     tr.appendChild(td);
     tbody.appendChild(tr);
   } else {
     for (const t of tasks) {
       const tr = document.createElement('tr');
       tr.innerHTML = `
-        <td><span class="pill ${t.status}"><span class="dot"></span>${statusLabel(t.status)}</span></td>
+        <td><span class="pill ${t.status}"><span class="dot"></span>${STATUS_LABEL[t.status] || t.status}</span></td>
         <td>${escapeHtml(t.pessoa)}</td>
-        <td>${escapeHtml(t.projeto)}</td>
+        <td class="mono">${escapeHtml(t.assinatura || '—')}</td>
         <td class="task-cell">${escapeHtml(t.tarefa)}</td>
         <td class="mono">${fmtDateTime(t.ts_inicio)}</td>
         <td class="mono">${fmtDateTime(t.ts_fim)}</td>`;
@@ -428,10 +510,5 @@
 
   document.getElementById('event-count-footer').textContent = events.length + ' eventos registrados';
   document.getElementById('updated-at').textContent = generatedAt ? fmtDateTime(generatedAt) + ' (BRT)' : '—';
-
-  function statusLabel(s) { return s === 'iniciada' ? 'Em andamento' : s === 'concluida' ? 'Concluída' : 'Erro'; }
-  function escapeHtml(s) {
-    return String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
-  }
 })();
 </script>
