@@ -46,10 +46,14 @@ LOCAL_DIR = "$HOME/.aegro-task-status"
 
 ### Pré-requisito: acesso de escrita ao repositório
 
-O repositório é privado. Se o `git push` falhar por permissão, avise o
-colaborador que ele precisa ser adicionado como colaborador em
+O repositório é público para leitura, mas escrita (`git push`) ainda exige
+ser colaborador. Se o `git push` falhar por permissão, avise o colaborador
+que ele precisa ser adicionado como colaborador em
 `https://github.com/yaraoliveira-onb/team-task-status/settings/access` antes
 da skill funcionar — não tente contornar isso.
+
+**Importante:** por ser público, redobre o cuidado com "Nunca registre"
+abaixo — qualquer pessoa na internet pode ler `data/status.jsonl`.
 
 ## Fluxo em cada tarefa
 
